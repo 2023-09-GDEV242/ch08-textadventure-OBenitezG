@@ -19,7 +19,7 @@ public class Game
 {
     private Parser parser;
     private Room currentRoom;
-        
+
     /**
      * Create the game and initialise its internal map.
      */
@@ -35,14 +35,14 @@ public class Game
     private void createRooms()
     {
         Room outside, theater, pub, lab, office;
-      
+
         // create the rooms
         outside = new Room("outside the main entrance of the university");
         theater = new Room("in a lecture theater");
         pub = new Room("in the campus pub");
         lab = new Room("in a computing lab");
         office = new Room("in the computing admin office");
-        
+
         // initialise room exits
         outside.setExit("east", theater);
         outside.setExit("south", lab);
@@ -69,7 +69,7 @@ public class Game
 
         // Enter the main command loop.  Here we repeatedly read commands and
         // execute them until the game is over.
-                
+
         boolean finished = false;
         while (! finished) {
             Command command = parser.getCommand();
@@ -115,6 +115,16 @@ public class Game
                 goRoom(command);
                 break;
 
+            //Exercise 8.14:
+            case LOOK:
+                lookAround(command);
+                break;
+
+            //Exercise 8.15:  
+            case EAT:
+                eatSomething(command);
+                break;
+                
             case QUIT:
                 wantToQuit = quit(command);
                 break;
@@ -164,6 +174,28 @@ public class Game
         }
     }
 
+    /**
+     * Exercise 8.14:
+     * Looks around the current room
+     *
+     * @return    A description of the current room
+     */
+    private void lookAround(Command command)
+    {
+        System.out.println(currentRoom.getLongDescription());
+    }
+    
+    /**
+     * Exercise 8.14:
+     * Looks around the current room
+     *
+     * @return    A description of the current room
+     */
+    private void eatSomething(Command command)
+    {
+        System.out.println("You have eaten now and you are not hungry anymore.");
+    }
+    
     /** 
      * "Quit" was entered. Check the rest of the command to see
      * whether we really quit the game.
