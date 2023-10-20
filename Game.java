@@ -35,6 +35,7 @@ public class Game
     private void createRooms()
     {
         Room outside, theater, pub, lab, office;
+        Item apple, disk, book, paper;
 
         // create the rooms
         outside = new Room("outside the main entrance of the university");
@@ -43,10 +44,18 @@ public class Game
         lab = new Room("in a computing lab");
         office = new Room("in the computing admin office");
 
-        // initialise room exits
+        //create the items
+        apple = new Item("a shiny red apple", 1);
+        disk = new Item("an old floppy disk", 0.1);
+        book = new Item("a dusty book", 1);
+        paper = new Item("a stack of paper", 0.2);
+        
+        // initialise room exits & items
         outside.setExit("east", theater);
         outside.setExit("south", lab);
         outside.setExit("west", pub);
+        
+        outside.setItem(apple);
 
         theater.setExit("west", outside);
 
@@ -54,8 +63,13 @@ public class Game
 
         lab.setExit("north", outside);
         lab.setExit("east", office);
+        
+        lab.setItem(disk);
 
         office.setExit("west", lab);
+        
+        office.setItem(book);
+        office.setItem(paper);
 
         currentRoom = outside;  // start game outside
     }
@@ -88,7 +102,7 @@ public class Game
         System.out.println("World of Zuul is a new, incredibly boring adventure game.");
         System.out.println("Type '" + CommandWord.HELP + "' if you need help.");
         System.out.println();
-        System.out.println(currentRoom.getLongDescription());
+        currentRoom.getLongDescription();
     }
 
     /**
@@ -170,26 +184,28 @@ public class Game
         }
         else {
             currentRoom = nextRoom;
-            System.out.println(currentRoom.getLongDescription());
+            currentRoom.getLongDescription();
         }
     }
 
     /**
      * Exercise 8.14:
      * Looks around the current room
-     *
+     * 
+     * @param     The command word used to run this method
      * @return    A description of the current room
      */
     private void lookAround(Command command)
     {
-        System.out.println(currentRoom.getLongDescription());
+        currentRoom.getLongDescription();
     }
     
     /**
-     * Exercise 8.14:
-     * Looks around the current room
+     * Exercise 8.15:
+     * Eats an item
      *
-     * @return    A description of the current room
+     * @param     The command word used to run this method
+     * @return    A description of eating an item
      */
     private void eatSomething(Command command)
     {
