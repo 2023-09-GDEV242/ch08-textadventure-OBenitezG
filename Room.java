@@ -56,7 +56,23 @@ public class Room
     {
         items.add(item);
     }
-
+    
+    public void removeItem(String itemName)
+    {
+        int itemNumber = 0;
+        
+        for (int index = 0; index < items.size(); index++) {
+            if (items.get(index).getName()== itemName) {
+                index = itemNumber;
+            }
+        }
+        
+        items.remove(itemNumber);
+        
+        System.out.println("You took the " + itemName 
+                        + " and put it into your backpack");
+    }
+    
     /**
      * @return The short description of the room
      * (the one that was defined in the constructor).
@@ -74,7 +90,7 @@ public class Room
      */
     public void getLongDescription()
     {
-        if (items.size() == 0) {
+        if (items.size() < 1) {
             System.out.println("You are " + description + ".\n" + getExitString());
         } else {
             System.out.println("You are " + description + ".\n");

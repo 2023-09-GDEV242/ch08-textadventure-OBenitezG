@@ -19,6 +19,7 @@ public class Game
 {
     private Parser parser;
     private Room currentRoom;
+    private Player player;
 
     /**
      * Create the game and initialise its internal map.
@@ -27,6 +28,7 @@ public class Game
     {
         createRooms();
         parser = new Parser();
+        player = new Player();
     }
 
     /**
@@ -45,10 +47,10 @@ public class Game
         office = new Room("in the computing admin office");
 
         //create the items
-        apple = new Item("a shiny red apple", 1);
-        disk = new Item("an old floppy disk", 0.1);
-        book = new Item("a dusty book", 1);
-        paper = new Item("a stack of paper", 0.2);
+        apple = new Item("apple", "a shiny red apple", 1);
+        disk = new Item("disk", "an old floppy disk", 0.1);
+        book = new Item("book", "a dusty book", 1);
+        paper = new Item("paper", "a stack of paper", 0.2);
         
         // initialise room exits & items
         outside.setExit("east", theater);
@@ -139,6 +141,10 @@ public class Game
                 eatSomething(command);
                 break;
                 
+            case GRAB:
+                grabSomething(command);
+                break;
+                
             case QUIT:
                 wantToQuit = quit(command);
                 break;
@@ -184,10 +190,29 @@ public class Game
         }
         else {
             currentRoom = nextRoom;
+            player.lowerHunger(10);
             currentRoom.getLongDescription();
         }
     }
 
+    /** 
+     *
+     *
+     */
+    private void grabSomething(Command command) 
+    {
+        if(!command.hasSecondWord()) {
+            System.out.println("Grab what?");
+            return;
+        }
+        
+        String item = command.getSecondWord();
+        
+        currentRoom.removeItem(item);
+        
+        player.addItem(item);
+    }
+    
     /**
      * Exercise 8.14:
      * Looks around the current room
@@ -209,7 +234,16 @@ public class Game
      */
     private void eatSomething(Command command)
     {
-        System.out.println("You have eaten now and you are not hungry anymore.");
+        if(!command.hasSecondWord()) {
+            System.out.println("Eat what?");
+            return;
+        }
+        
+        String item = command.getSecondWord();
+        
+        player.eat(item);
+        
+        player.raiseHunger(50);
     }
     
     /** 

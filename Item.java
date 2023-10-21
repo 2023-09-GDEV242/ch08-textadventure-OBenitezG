@@ -1,4 +1,3 @@
-import java.util.HashMap;
 
 /**
  * Exercise 8.20/8.21:
@@ -9,6 +8,7 @@ import java.util.HashMap;
  */
 public class Item
 {
+    private String name;
     private String description;
     private double weight;
 
@@ -18,20 +18,21 @@ public class Item
      * @param description: Allows a description to be passed
      * @param weight:      Allows a weight to be assigned to the item
      */
-    public Item(String description, double weight)
+    public Item(String name, String description, double weight)
     {
+        this.name = name;
         this.description = description;
         this.weight = weight;
     }
     
     /**
-     * Return a description of just the item
+     * Return the name of the item
      * 
-     * @return: The short description of the room
+     * @return: The name
      */
-    public String getShortDescription()
+    public String getName()
     {
-        return description;
+        return name;
     }
     
     /**
