@@ -21,6 +21,11 @@ public class Game
     private Room currentRoom;
     private Player player;
 
+    public static void main(String[] args) {
+        Game start = new Game();
+        start.play();
+    }   
+
     /**
      * Create the game and initialise its internal map.
      */
@@ -36,8 +41,10 @@ public class Game
      */
     private void createRooms()
     {
-        Room outside, theater, pub, lab, office;
-        Item apple, disk, book, paper;
+        Room outside, theater, pub, lab, office, courtyard,
+        parkinglot, lobby, bathroom, breakroom, classroom, hallway, 
+        library, meetingroom, lectureroom,balcony;
+        Item apple, disk, book, paper, gummies, muffin, water, coffie, crackers, key;
 
         // create the rooms
         outside = new Room("outside the main entrance of the university");
@@ -45,34 +52,107 @@ public class Game
         pub = new Room("in the campus pub");
         lab = new Room("in a computing lab");
         office = new Room("in the computing admin office");
+        courtyard = new Room("in a spacious courtyard");
+        parkinglot = new Room("in a vacant parking lot");
+        lobby = new Room("in a desolate lobby");
+        bathroom = new Room("in the bathrooms");
+        breakroom = new Room("in the brakroom");
+        classroom = new Room("in the classroom");
+        hallway = new Room("in the hallway");
+        library = new Room("in the library");
+        meetingroom = new Room("in the meeting room");
+        lectureroom = new Room("in the lecture room");
+        balcony = new Room("outside the library");
 
         //create the items
-        apple = new Item("apple", "a shiny red apple", 1);
-        disk = new Item("disk", "an old floppy disk", 0.1);
-        book = new Item("book", "a dusty book", 1);
-        paper = new Item("paper", "a stack of paper", 0.2);
+        apple = new Item("apple", "shiny red apple", 1);
+        disk = new Item("disk", "old floppy disk", 0.1);
+        book = new Item("book", "dusty book", 1);
+        paper = new Item("paper", " stack of paper", 0.2);
+        gummies = new Item("fruit gummies", "Whelche's fruit gummie snack", 0.1);
+        muffin = new Item("muffin", "toasted corn muffin", 0.1);
+        water = new Item("water bottle", "Poland Spring water bottle", 0.5);
+        coffie = new Item("coffie", "luke warm cup of coffe", 0.1);
+        crackers = new Item("crackers", "ritz crackers", 0.1);
+        key = new Item("key", "key with a tag that says meeting room", 0.1);
         
-        // initialise room exits & items
+        
+        // initialise room exits
         outside.setExit("east", theater);
         outside.setExit("south", lab);
         outside.setExit("west", pub);
-        
-        outside.setItem(apple);
 
         theater.setExit("west", outside);
 
         pub.setExit("east", outside);
+        pub.setExit("south", courtyard);
 
         lab.setExit("north", outside);
         lab.setExit("east", office);
-        
-        lab.setItem(disk);
 
         office.setExit("west", lab);
         
+        courtyard.setExit("west", parkinglot);
+        courtyard.setExit("south", lobby);
+        courtyard.setExit("north", pub);
+        
+        parkinglot.setExit("east", courtyard);
+        
+        lobby.setExit("west", bathroom);
+        lobby.setExit("east", breakroom);
+        lobby.setExit("south", hallway);
+        lobby.setExit("north", courtyard);
+        
+        bathroom.setExit("east", lobby);
+        bathroom.setExit("south", classroom);
+        
+        breakroom.setExit("west", lobby);
+        breakroom.setExit("south", library);
+        
+        classroom.setExit("north", bathroom);
+        classroom.setExit("east", hallway);
+        
+        hallway.setExit("north", lobby);
+        hallway.setExit("south", lectureroom);
+        hallway.setExit("east", library);
+        hallway.setExit("west", classroom);
+        
+        library.setExit("north", breakroom);
+        library.setExit("south", balcony);
+        library.setExit("east", meetingroom);
+        library.setExit("west", hallway);
+        
+        meetingroom.setExit("west", library);
+        
+        lectureroom.setExit("north", hallway);
+        
+        balcony.setExit("north", library);
+        
+        // initialise room items
+        outside.setItem(apple);
+        
+        lab.setItem(disk);
+        
+        bathroom.setItem(key);
+        
         office.setItem(book);
         office.setItem(paper);
-
+        
+        breakroom.setItem(gummies);
+        breakroom.setItem(muffin);
+        breakroom.setItem(water);
+        
+        classroom.setItem(coffie);
+        
+        lectureroom.setItem(coffie);
+        lectureroom.setItem(water);
+        lectureroom.setItem(muffin);
+        
+        meetingroom.setItem(crackers);
+        lectureroom.setItem(coffie);
+        lectureroom.setItem(water);
+        lectureroom.setItem(muffin);
+        
         currentRoom = outside;  // start game outside
     }
 
@@ -145,6 +225,10 @@ public class Game
                 grabSomething(command);
                 break;
                 
+            case BACKPACK:
+                checkBackpack(command);
+                break;
+                
             case QUIT:
                 wantToQuit = quit(command);
                 break;
@@ -189,9 +273,20 @@ public class Game
             System.out.println("There is no door!");
         }
         else {
-            currentRoom = nextRoom;
-            player.lowerHunger(10);
-            currentRoom.getLongDescription();
+            if (nextRoom.getShortDescription() == "in the meeting room") {
+                if (player.hasItem("key") == false) {
+                    System.out.println("Door is locked");
+                    return;
+                } else {
+                    currentRoom = nextRoom;
+                    player.lowerHunger(10);
+                    currentRoom.getLongDescription();
+                }
+            } else {
+                currentRoom = nextRoom;
+                player.lowerHunger(10);
+                currentRoom.getLongDescription();
+            }
         }
     }
 
@@ -211,6 +306,11 @@ public class Game
         currentRoom.removeItem(item);
         
         player.addItem(item);
+    }
+    
+    private void checkBackpack(Command command) 
+    {
+        player.insideBackpack();
     }
     
     /**
@@ -241,9 +341,7 @@ public class Game
         
         String item = command.getSecondWord();
         
-        player.eat(item);
-        
-        player.raiseHunger(50);
+        System.out.println(player.eat(item));
     }
     
     /** 

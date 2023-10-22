@@ -11,7 +11,6 @@ import java.util.ArrayList;
 public class Player
 {
     private ArrayList<String> backpack;
-    private ArrayList<String> keyRing; 
     
     private int health;
     private int hunger;
@@ -20,15 +19,38 @@ public class Player
      * Constructor for objects of class Player
      * Contains Player's health and hunger values
      * 
-     * Creates the backpack and keyRing arrays to hold items
+     * Creates the backpack array to hold items
      */
     public Player()
     {
+        // The player stats
         health = 100;
         hunger = 150;
         
+        //creates the backpack array
         backpack = new ArrayList<>();
-        keyRing = new ArrayList<>();
+    }
+    
+    public void insideBackpack()
+    {
+        if (backpack.size() < 1){
+            System.out.println("You have nothing in your backpack");
+        } else {
+            System.out.println(backpack.toString());
+        }
+    }
+    
+    public boolean hasItem(String item) 
+    {
+        boolean itemCheck = false;
+        
+        for (int index = 0; index < backpack.size(); index++) {
+            if (backpack.get(index).equals(item)) {
+                itemCheck = true;
+            }
+        }
+        
+        return itemCheck;
     }
 
     public void addItem(String item)
@@ -36,19 +58,28 @@ public class Player
         backpack.add(item);
     }
     
-    public void eat(String item)
+    public String eat(String item)
     {
-        int itemNumber = 0;
-        
-        for (int index = 0; index < backpack.size(); index++) {
-            if (backpack.get(index) == item) {
-                index = itemNumber;
+        int itemNumber = -1;
+
+        if ("book".equals(item) || "disk".equals(item) || "key".equals(item)) {
+            return "You can't eat that!";
+        } else {
+            for (int index = 0; index < backpack.size(); index++) {
+                if (backpack.get(index).equals(item)) {
+                    itemNumber = index;
+                }
             }
-        }
-        
-        System.out.println("You ate the " + item);
-        
-        backpack.remove(itemNumber);
+
+            if (itemNumber == -1) {
+                return "That item is not in your backpack";
+            }
+
+            backpack.remove(itemNumber);
+            raiseHunger(50);
+
+            return "You ate the " + item;
+            }
     }
     
     public void lowerHunger(int lower)
@@ -61,16 +92,12 @@ public class Player
         
         if (hunger <= 0) {
             health -= 1;
-            System.out.println("Your starving.. you lost 1 hp");
+            System.out.println("You're starving.. you lost 1 hp");
         }
     }
     
     public void raiseHunger(int raise)
     {
         hunger += raise;
-        
-        if (hunger >= 100) {
-            System.out.println("You feel alot better");
-        }
     }
 }
