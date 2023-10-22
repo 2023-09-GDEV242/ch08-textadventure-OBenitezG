@@ -13,6 +13,9 @@
  * 
  * @author  Michael Kölling and David J. Barnes
  * @version 2016.02.29
+ * 
+ * @student Obdulio Benitez Garcia
+ * @class GDEV-242-99V
  */
 
 public class Game 
@@ -21,6 +24,12 @@ public class Game
     private Room currentRoom;
     private Player player;
 
+    
+    /**
+     * Method main
+     * Plays the game without the use of BlueJ
+     *
+     */
     public static void main(String[] args) {
         Game start = new Game();
         start.play();
@@ -38,6 +47,7 @@ public class Game
 
     /**
      * Create all the rooms and link their exits together.
+     * Creates all the items and places them in a room.
      */
     private void createRooms()
     {
@@ -235,9 +245,7 @@ public class Game
         }
         return wantToQuit;
     }
-
-    // implementations of user commands:
-
+    
     /**
      * Print out some help information.
      * Here we print some stupid, cryptic message and a list of the 
@@ -291,8 +299,10 @@ public class Game
     }
 
     /** 
+     *  Grabs an item by removing them from the rooms array and adding it to the players array
      *
-     *
+     * @param:   The command
+     * @return: if the item was grabbed or not
      */
     private void grabSomething(Command command) 
     {
@@ -302,12 +312,22 @@ public class Game
         }
         
         String item = command.getSecondWord();
+
+        if (!currentRoom.hasItem(item)) {
+            System.out.println("There is no item");
+            return;
+        }
         
         currentRoom.removeItem(item);
         
         player.addItem(item);
     }
     
+    /**
+     * Allows the player to check what they have in their backpack
+     *
+     * @return An array of stored items
+     */
     private void checkBackpack(Command command) 
     {
         player.insideBackpack();

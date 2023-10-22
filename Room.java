@@ -15,6 +15,9 @@ import java.util.ArrayList;
  * 
  * @author  Michael Kölling and David J. Barnes
  * @version 2016.02.29
+ * 
+ * @student Obdulio Benitez Garcia
+ * @class GDEV-242-99V
  */
 
 public class Room 
@@ -57,12 +60,17 @@ public class Room
         items.add(item);
     }
     
+    /**
+     * Removes an item from the room's array
+     *
+     * @param item: The item object that is being removed from the room.
+     */
     public void removeItem(String itemName)
     {
         int itemNumber = 0;
         
         for (int index = 0; index < items.size(); index++) {
-            if (items.get(index).getName()== itemName) {
+            if (items.get(index).getName() == itemName) {
                 index = itemNumber;
             }
         }
@@ -125,6 +133,25 @@ public class Room
     public Room getExit(String direction) 
     {
         return exits.get(direction);
+    }
+    
+    /**
+     * Checks if the room has an item
+     * 
+     * @param:  The item we want to check for
+     * @return: If the item was found or not
+     */
+    public boolean hasItem(String item)
+    {
+        boolean found = false;
+        
+        for (int index = 0; index < items.size(); index++) {
+            if (items.get(index).getName().equals(item)) {
+                found = true;
+            }
+        }
+        
+        return found;
     }
 }
 

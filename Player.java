@@ -31,6 +31,10 @@ public class Player
         backpack = new ArrayList<>();
     }
     
+    /**
+     * Prints the players stored items
+     *
+     */
     public void insideBackpack()
     {
         if (backpack.size() < 1){
@@ -40,6 +44,12 @@ public class Player
         }
     }
     
+    /**
+     * Checks to see if the player has a certain item
+     *
+     * @param:  The item we want to look for
+     * @return: True or false depending if the player has the item
+     */
     public boolean hasItem(String item) 
     {
         boolean itemCheck = false;
@@ -53,11 +63,22 @@ public class Player
         return itemCheck;
     }
 
+    /**
+     * Adds an item to the array
+     *
+     * @param:  The item to add
+     */
     public void addItem(String item)
     {
         backpack.add(item);
     }
     
+    /**
+     * Attempts to eat an item. If an item is not ediable do not allow to eat it.
+     *
+     *@param:   The item we want to attempt to eat
+     *@return:  If it was possible to eat that item
+     */
     public String eat(String item)
     {
         int itemNumber = -1;
@@ -82,6 +103,11 @@ public class Player
             }
     }
     
+    /**
+     * Lowers the players hunger by an amount
+     *
+     * @param:   How much to lower the players hunger
+     */
     public void lowerHunger(int lower)
     {
         hunger -= lower;
@@ -96,6 +122,11 @@ public class Player
         }
     }
     
+    /**
+     * Raises the players hunger by an amount
+     * 
+     * @param:  How much to raise the players hunger
+     */
     public void raiseHunger(int raise)
     {
         hunger += raise;
