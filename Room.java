@@ -1,6 +1,7 @@
 import java.util.Set;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.ArrayList;
 
 /**
  * Class Room - a room in an adventure game.
@@ -14,12 +15,16 @@ import java.util.Iterator;
  * 
  * @author  Michael Kölling and David J. Barnes
  * @version 2016.02.29
+ * 
+ * @student Obdulio Benitez Garcia
+ * @class GDEV-242-99V
  */
 
 public class Room 
 {
     private String description;
     private HashMap<String, Room> exits;        // stores exits of this room.
+    private ArrayList<Item> items;              // stores items of this room.
 
     /**
      * Create a room described "description". Initially, it has
@@ -31,6 +36,7 @@ public class Room
     {
         this.description = description;
         exits = new HashMap<>();
+        items = new ArrayList<>();
     }
 
     /**
@@ -42,7 +48,39 @@ public class Room
     {
         exits.put(direction, neighbor);
     }
-
+    
+    /**
+     * Sets in what room an item will be placed in
+     * The door is the key with the item being it's value
+     *
+     * @param item: The item object that is being put in the room.
+     */
+    public void setItem(Item item) 
+    {
+        items.add(item);
+    }
+    
+    /**
+     * Removes an item from the room's array
+     *
+     * @param item: The item object that is being removed from the room.
+     */
+    public void removeItem(String itemName)
+    {
+        int itemNumber = 0;
+        
+        for (int index = 0; index < items.size(); index++) {
+            if (items.get(index).getName() == itemName) {
+                index = itemNumber;
+            }
+        }
+        
+        items.remove(itemNumber);
+        
+        System.out.println("You took the " + itemName 
+                        + " and put it into your backpack");
+    }
+    
     /**
      * @return The short description of the room
      * (the one that was defined in the constructor).
@@ -58,9 +96,17 @@ public class Room
      *     Exits: north west
      * @return A long description of this room
      */
-    public String getLongDescription()
+    public void getLongDescription()
     {
-        return "You are " + description + ".\n" + getExitString();
+        if (items.size() < 1) {
+            System.out.println("You are " + description + ".\n" + getExitString());
+        } else {
+            System.out.println("You are " + description + ".\n");
+            for (Item item: items) {
+                System.out.println(item.getLongDescription());
+            }
+            System.out.println(getExitString());
+        }
     }
 
     /**
@@ -87,6 +133,25 @@ public class Room
     public Room getExit(String direction) 
     {
         return exits.get(direction);
+    }
+    
+    /**
+     * Checks if the room has an item
+     * 
+     * @param:  The item we want to check for
+     * @return: If the item was found or not
+     */
+    public boolean hasItem(String item)
+    {
+        boolean found = false;
+        
+        for (int index = 0; index < items.size(); index++) {
+            if (items.get(index).getName().equals(item)) {
+                found = true;
+            }
+        }
+        
+        return found;
     }
 }
 

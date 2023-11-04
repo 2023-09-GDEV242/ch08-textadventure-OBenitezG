@@ -1,0 +1,15 @@
+Intermediate requirement:
+	Added items
+	Made it so rooms can hold items
+
+Advanced requirement:
+	Added a locked door and a key item.
+		(locked door: meeting room | key found: in the bathrooms)
+	Eating changes your hunger level.
+
+Extra additions:
+	Player can grab and store items.
+	Player losses hunger everytime they move into a room.
+	Player can check all items they grabbed.
+	Game doesn't allow certain items to be eaten.
+	If hunger goes down to zero, player starts losing health.
